@@ -3644,7 +3644,7 @@ class Session(object):  # pylint: disable=too-many-public-methods
             str: The corresponding AWS IAM role ARN.
         """
         if type(role) is ParameterString:
-            role = role.enum_values[0]
+            role = role.default_value if role.enum_values is None else role.enum_values[0]
         if "/" in role:
             return role
         return self.boto_session.resource("iam").Role(role).arn
