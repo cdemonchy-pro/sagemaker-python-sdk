@@ -31,7 +31,7 @@ import six
 
 import sagemaker.logs
 from sagemaker import vpc_utils
-
+from sagemaker.workflow.parameters import ParameterString
 from sagemaker._studio import _append_project_tags
 from sagemaker.deprecations import deprecated_class
 from sagemaker.inputs import ShuffleConfig, TrainingInput
@@ -3643,6 +3643,8 @@ class Session(object):  # pylint: disable=too-many-public-methods
         Returns:
             str: The corresponding AWS IAM role ARN.
         """
+        if type(role) is ParameterString:
+            role = role.enum_values[0]
         if "/" in role:
             return role
         return self.boto_session.resource("iam").Role(role).arn
